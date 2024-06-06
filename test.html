@@ -1,0 +1,105 @@
+
+// Products with descriptions
+
+const products = [
+    {
+        "name": "Aloe Vera",
+        "origin": "Nederländerna",
+        "description": "Lättskött suckulent med tjocka gröna blad. En av världens äldsta läkeväxkter. Trivs på soliga platser. Låt den torka ut mellan varje vattning",
+        "care": "Lättskött suckulent som trivs ljust, men undvik direkt solljus. Vattna undertill och inte på växten, men låt jorden torka mellan varje vattning. Ge flytande näring från vår till höst. Eventuell omplantering ska göras på våren.",
+        "price": 799,
+        "image": "images/Aloevera.png"
+    },
+    {
+        "name": "Citronfikus",
+        "origin": "Danmark",
+        "description": "En vacker växt med blanka, små gröna blad. Lättskött alternativ till en bonsai. Trivs i ljust till halvskuggigt läge. Vattnas då jorden nästan torkat upp, ungefär en gång i veckan.",
+        "care": "Passar bra i uterummet sommartid, vänt mot öst eller väst. Behöver extra ljus vintertid. Tål måttlig uttorkning, men att vattna den regelbundet är rekommendationen för att den ska bli så fin som möjligt.",
+        "price": 299,
+        "image": "images/Citronfikus.png"
+    },
+    {
+        "name": "Benjaminfikus",
+        "origin": "Asien och Australien",
+        "description": "En vacker växt med blanka, gröna blad, här med elegant flätad stam. Trivs ljust, men undvik direkt solljus. Låt den torka lätt mellan vattningarna. Gillar att bli duschad på bladen.",
+        "care": "Vill stå så ljust men undvik direkt sol och drag. Flytta helst inte växten under vinterhalvåret då den kan tappa sina blad. Vattna 1 gång i veckan. Håll jorden fuktig. Under vinterhalvåret behöver den inte samma mängd vatten. Ge den näring 1 gång i veckan under våren och sommaren. Under höst och vinter 1 gång i månaden. ",
+        "price": 599,
+        "image": "images/Benjaminfikus.png"
+    }
+];
+
+// The protocol array pointing the key that is the products
+
+let protocol = {};
+
+// Starting of the amount at 0
+
+function initProtocol() {
+    for (let product of products) {
+        protocol[product.name] = 0;
+    }
+}
+
+// The body of the protocol
+
+function renderProtocol() {
+    let tbody = document.querySelector("#protocol > tbody");
+    tbody.innerHTML = "";
+    for (let product of products) {
+        let row = tbody.insertRow(-1);
+        let cellName = row.insertCell(-1);
+        let cellAmount = row.insertCell(-1);
+        let cellScore = row.insertCell(-1);
+        let amount = protocol[product.name];
+        cellName.textContent = product.name;
+        cellAmount.textContent = amount;
+        cellScore.textContent = amount * product.score;
+    }
+}
+
+// Uping the product amount in the protocol 
+function increment(name) {
+    console.log("Name: " + name);
+    protocol[name]++;
+    renderProtocol();
+}
+
+// Rendering the design of the product table
+function renderProducts() {
+    const template = `
+        <img>
+        <div class="p-2">
+            <div>
+                <span class="name"></span>
+                <span class="plus float-right" title="Lägg till produkt">
+                    <i class="fa fa-plus-square" aria-hidden="true"></i>
+                </span>
+            </div>
+            <div class="origin"></div>
+            <div class="description"></div>
+            <div class="care"></div>
+            <div class="price"></div>
+        </div>
+    `;
+
+    const container = document.querySelector("#products");
+    for (let product of products) {
+        let item = document.createElement("div");
+        item.classList.add("item", "ml-2");
+        item.innerHTML = template;
+        item.querySelector("img").src = product.image;
+        item.querySelector(".name").textContent = product.name;
+        item.querySelector(".origin").textContent = product.origin;
+        item.querySelector(".care").textContent = product.care;
+        item.querySelector(".price").textContent = product.price;
+        item.querySelector(".description").textContent = product.description;
+        item.querySelector(".plus").addEventListener("click", () => increment(product.name));
+        container.appendChild(item);
+    }
+}
+
+window.onload = function() {
+    renderProducts();
+    initProtocol();
+    renderProtocol();
+}
